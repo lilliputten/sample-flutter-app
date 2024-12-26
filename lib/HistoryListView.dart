@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:namer_app/MyAppState.dart';
+import 'MyAppState.dart';
 
 class HistoryListView extends StatefulWidget {
   const HistoryListView({Key? key}) : super(key: key);

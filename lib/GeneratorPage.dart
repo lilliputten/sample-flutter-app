@@ -2,10 +2,10 @@
 
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
-import 'package:namer_app/HistoryListView.dart';
 import 'package:provider/provider.dart';
 
-import 'package:namer_app/MyAppState.dart';
+import 'HistoryListView.dart';
+import 'MyAppState.dart';
 
 // @see https://docs.flutter.dev/cookbook/networking/fetch-data
 class GeneratorPage extends StatelessWidget {

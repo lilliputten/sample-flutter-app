@@ -1,10 +1,10 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:namer_app/MyHomePage.dart';
 import 'package:provider/provider.dart';
 
-import 'package:namer_app/MyAppState.dart';
+import 'MyHomePage.dart';
+import 'MyAppState.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -12,7 +12,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => MyAppState(),
+      create: (context) {
+        var appState = MyAppState();
+        // appState.loadAlbum();
+        return appState;
+      },
       child: MaterialApp(
         title: 'Namer App',
         theme: ThemeData(

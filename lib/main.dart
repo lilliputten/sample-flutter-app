@@ -2,9 +2,7 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:namer_app/MyApp.dart';
-
-// @see https://docs.flutter.dev/cookbook/networking/fetch-data
+import 'MyApp.dart';
 
 void main() {
   runApp(MyApp());

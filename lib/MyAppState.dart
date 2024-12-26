@@ -1,6 +1,9 @@
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 
+import 'Album/Album.dart';
+import 'Album/fetchAlbum.dart';
+
 class MyAppState extends ChangeNotifier {
   var current = WordPair.random();
   var history = <WordPair>[];
@@ -31,4 +34,19 @@ class MyAppState extends ChangeNotifier {
     favorites.remove(pair);
     notifyListeners();
   }
+
+  late Future<Album> futureAlbum;
+  // Future<Album>? futureAlbum;
+
+  void loadAlbum() {
+    futureAlbum = fetchAlbum();
+  }
+
+  // loadAlbum()
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   futureAlbum = fetchAlbum();
+  // }
 }
