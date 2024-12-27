@@ -14,7 +14,9 @@ class NetworkPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
 
-    appState.loadAlbum();
+    if (!appState.albumInitialized) {
+      appState.loadAlbum();
+    }
 
     var futureAlbum = appState.futureAlbum;
 

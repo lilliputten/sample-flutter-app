@@ -35,11 +35,13 @@ class MyAppState extends ChangeNotifier {
     notifyListeners();
   }
 
+  bool albumInitialized = false;
   late Future<Album> futureAlbum;
   // Future<Album>? futureAlbum;
 
   void loadAlbum() {
     futureAlbum = fetchAlbum();
+    albumInitialized = true;
   }
 
   // loadAlbum()

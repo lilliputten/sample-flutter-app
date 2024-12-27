@@ -3,14 +3,18 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'Init.dart';
 import 'MyHomePage.dart';
 import 'MyAppState.dart';
+import 'SplashScreen.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final Future initFuture = Init.initialize();
+
     return ChangeNotifierProvider(
       create: (context) {
         var appState = MyAppState();
@@ -23,7 +27,17 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         ),
-        home: MyHomePage(),
+        // home: MyHomePage(),
+        home: FutureBuilder(
+          future: initFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return MyHomePage();
+            } else {
+              return SplashScreen();
+            }
+          },
+        ),
       ),
     );
   }
