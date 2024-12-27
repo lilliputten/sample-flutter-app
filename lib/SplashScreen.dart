@@ -30,8 +30,8 @@ class _SplashScreen extends State<SplashScreen> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     var style = theme.textTheme.bodySmall!.copyWith(
-      // color: theme.colorScheme.primary,
-    );
+        // color: theme.colorScheme.primary,
+        );
     var size = 60.0;
     var strokeWidth = 2.0;
 

@@ -1,8 +1,9 @@
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 
-import 'Album/Album.dart';
-import 'Album/fetchAlbum.dart';
+import 'Quote/Quote.dart';
+import 'Quote/fetchQuote.dart';
+import 'helpers/fetchGoogleImage.dart';
 
 class MyAppState extends ChangeNotifier {
   var current = WordPair.random();
@@ -35,20 +36,35 @@ class MyAppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool albumInitialized = false;
-  late Future<Album> futureAlbum;
-  // Future<Album>? futureAlbum;
+  bool quoteInitialized = false;
+  late Future<Quote> futureQuote;
+  bool imgUrlInitialized = false;
+  String imgUrl = '';
+  late Future<String> futureImgUrl;
+  // Future<Quote>? futureQuote;
 
-  void loadAlbum() {
-    futureAlbum = fetchAlbum();
-    albumInitialized = true;
+  void loadQuote() {
+    imgUrlInitialized = false;
+    futureQuote = fetchQuote();
+    futureQuote.then((quote) {
+      futureImgUrl = fetchGoogleImage(quote.author);
+      imgUrlInitialized = true;
+      notifyListeners();
+      futureImgUrl.then((url) {
+        print("Image url: $url");
+        imgUrl = url;
+        notifyListeners();
+      });
+    });
+    quoteInitialized = true;
+    notifyListeners();
   }
 
-  // loadAlbum()
+  // loadQuote()
 
   // @override
   // void initState() {
   //   super.initState();
-  //   futureAlbum = fetchAlbum();
+  //   futureQuote = fetchQuote();
   // }
 }

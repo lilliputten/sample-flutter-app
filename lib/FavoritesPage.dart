@@ -8,8 +8,11 @@ import 'MyAppState.dart';
 class FavoritesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var theme = Theme.of(context);
     var appState = context.watch<MyAppState>();
+    var theme = Theme.of(context);
+    var style = theme.textTheme.bodyMedium!.copyWith(
+        // color: theme.colorScheme.onPrimary,
+        );
 
     if (appState.favorites.isEmpty) {
       return Center(
@@ -42,9 +45,19 @@ class FavoritesPage extends StatelessWidget {
                       appState.removeFavorite(pair);
                     },
                   ),
-                  title: Text(
-                    pair.asLowerCase,
-                    semanticsLabel: pair.asPascalCase,
+                  title: MergeSemantics(
+                    child: Wrap(
+                      children: [
+                        Text(
+                          pair.first,
+                          style: style.copyWith(fontWeight: FontWeight.w200),
+                        ),
+                        Text(
+                          pair.second,
+                          style: style.copyWith(fontWeight: FontWeight.bold),
+                        )
+                      ],
+                    ),
                   ),
                 ),
             ],

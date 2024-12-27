@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'FavoritesPage.dart';
 import 'GeneratorPage.dart';
-import 'NetworkPage.dart';
+import 'QuotePage.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -14,7 +14,8 @@ class MyHomePage extends StatefulWidget {
 // @see https://docs.flutter.dev/cookbook/networking/fetch-data
 
 class _MyHomePageState extends State<MyHomePage> {
-  var selectedIndex = 1;
+  // TODO: Put page index to store?
+  var selectedIndex = 0;
 
   // // Networking
   // // late Future<Album> futureAlbum;
@@ -31,7 +32,7 @@ class _MyHomePageState extends State<MyHomePage> {
     Widget page;
     switch (selectedIndex) {
       case 0:
-        page = NetworkPage();
+        page = QuotePage();
       case 1:
         page = GeneratorPage();
       case 2:
