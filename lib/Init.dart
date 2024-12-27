@@ -1,7 +1,12 @@
 class Init {
   static Future initialize() async {
-    await _registerServices();
-    await _loadSettings();
+    // await _registerServices();
+    // await _loadSettings();
+    List<Future<void>> futures = [
+      _registerServices(),
+      _loadSettings(),
+    ];
+    await Future.wait(futures);
   }
 
   static _registerServices() async {

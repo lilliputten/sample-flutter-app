@@ -30,6 +30,8 @@ class _HistoryListViewState extends State<HistoryListView> {
   @override
   Widget build(BuildContext context) {
     final appState = context.watch<MyAppState>();
+    var theme = Theme.of(context);
+    var style = theme.textTheme.bodyMedium!;
     appState.historyListKey = _key;
 
     return ShaderMask(
@@ -54,9 +56,19 @@ class _HistoryListViewState extends State<HistoryListView> {
                 icon: appState.favorites.contains(pair)
                     ? Icon(Icons.favorite, size: 12)
                     : SizedBox(),
-                label: Text(
-                  pair.asLowerCase,
-                  semanticsLabel: pair.asPascalCase,
+                label: MergeSemantics(
+                  child: Wrap(
+                    children: [
+                      Text(
+                        pair.first,
+                        style: style.copyWith(fontWeight: FontWeight.w200),
+                      ),
+                      Text(
+                        pair.second,
+                        style: style.copyWith(fontWeight: FontWeight.bold),
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),

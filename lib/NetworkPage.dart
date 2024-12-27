@@ -33,7 +33,7 @@ class NetworkPage extends StatelessWidget {
                 return Text('${snapshot.error}');
               }
               // By default, show a loading spinner.
-              return const CircularProgressIndicator();
+              return const CircularProgressIndicator(strokeWidth: 2);
             },
           ),
         ],
