@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:sample_app/MyAppState.dart';
+import 'MyAppState.dart';
 
 import 'Quote/Quote.dart';
 
