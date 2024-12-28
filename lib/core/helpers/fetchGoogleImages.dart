@@ -19,11 +19,11 @@ Future<List<String>> fetchGoogleImages(String search) async {
       .replaceAll('{search}', search);
   print("Trying to fetch an image with url: $urlString...");
   try {
-    // // DEBUG: Return sample data
-    // return Future<List<String>>.value([
-    //   'xxx',
-    //   'https://cdn-icons-png.flaticon.com/512/9908/9908191.png',
-    // ]);
+    // DEBUG: Return sample data
+    return Future<List<String>>.value([
+      'xxx',
+      'https://cdn-icons-png.flaticon.com/512/9908/9908191.png',
+    ]);
     final urlObject = Uri.parse(urlString);
     final response = await http.get(urlObject);
 
