@@ -51,13 +51,18 @@ app.*.map.json
 local.log.*
 *.lock
 
+# Local project files
+config-local.sh
+.env*
+!.env*SAMPLE
+
 # Unused & temp files
 \!UNUSED
 ~*
 *_
+*~
 zia*
 *.sw?
-*~
 \!ARC*
 *.session
 *crashed-session*

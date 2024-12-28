@@ -1,6 +1,8 @@
 # sample-flutter-app
 
-A new Flutter project.
+A smple Flutter project.
+
+- Project info: flaming-quotes v.0.0.0 / 2024.12.28 11:29:20 +0300
 
 ## Getting Started
 
