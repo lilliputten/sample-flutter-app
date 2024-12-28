@@ -4,8 +4,8 @@ import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'HistoryListView.dart';
-import 'MyAppState.dart';
+import 'package:flaming_quotes/shared/states/MyAppState.dart';
+import 'package:flaming_quotes/shared/widgets/HistoryListView.dart';
 
 // @see https://docs.flutter.dev/cookbook/networking/fetch-data
 class GeneratorPage extends StatelessWidget {

@@ -3,9 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'package:flaming_quotes/shared/states/MyAppState.dart';
+import 'package:flaming_quotes/pages/MyHomePage.dart';
+
 import 'Init.dart';
-import 'MyHomePage.dart';
-import 'MyAppState.dart';
 import 'SplashScreen.dart';
 
 class MyApp extends StatelessWidget {

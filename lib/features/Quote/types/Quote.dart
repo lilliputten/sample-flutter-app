@@ -23,7 +23,7 @@ class Quote {
         authorSlug: json['authorSlug'].toString(),
       );
     } catch (e) {
-      var msg = 'Something really unknown: $e';
+      final String msg = "Something really unknown: $e";
       print(msg);
       throw FormatException(msg);
     }

@@ -1,4 +1,4 @@
-import '../core/config/AppConfig.dart';
+import 'package:flaming_quotes/core/config/AppConfig.dart';
 
 const String googleApiKey = AppConfig.GOOGLE_API_KEY;
 const String googleCseId = AppConfig.GOOGLE_CSE_ID;

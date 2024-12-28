@@ -1,11 +1,11 @@
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 
-import 'Quote/Quote.dart';
-import 'Quote/fetchQuote.dart';
-import 'helpers/fetchGoogleImage.dart';
+import 'package:flaming_quotes/features/Quote/helpers/fetchQuote.dart';
+import 'package:flaming_quotes/features/Quote/types/Quote.dart';
 
 class MyAppState extends ChangeNotifier {
+  /// Word pair & hostory (a demo)
   var current = WordPair.random();
   var history = <WordPair>[];
 
@@ -19,6 +19,7 @@ class MyAppState extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Favorites list (a demo)
   var favorites = <WordPair>[];
 
   void toggleFavorite([WordPair? pair]) {
@@ -36,37 +37,21 @@ class MyAppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool quoteInitialized = false;
-  late Future<Quote> futureQuote;
-  bool imgUrlInitialized = false;
-  String imgUrl = '';
-  late Future<String> futureImgUrl;
-  // Future<Quote>? futureQuote;
+  /// Quote
+  Future<Quote>? futureQuote;
 
   loadQuote() {
-    // TODO: Return loaded quote
-    imgUrlInitialized = false;
     futureQuote = fetchQuote();
-    futureQuote.then((quote) {
-      futureImgUrl = fetchGoogleImage(quote.author);
-      imgUrlInitialized = true;
-      // notifyListeners();
-      futureImgUrl.then((url) {
-        print("Image url: $url");
-        imgUrl = url;
-        // notifyListeners();
-      });
-    });
-    quoteInitialized = true;
-    // notifyListeners();
     return futureQuote;
   }
 
-  // loadQuote()
+  ensureQuote() {
+    futureQuote ??= loadQuote();
+    return futureQuote;
+  }
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   futureQuote = fetchQuote();
-  // }
+  reloadQuote() {
+    loadQuote();
+    notifyListeners();
+  }
 }
