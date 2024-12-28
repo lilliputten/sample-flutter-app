@@ -1,6 +1,6 @@
 #!/bin/sh
 # @desc Update version number & build timestamps
-# @changed 2024.12.11, 11:36
+# @changed 2024.12.28, 17:26
 
 scriptsPath=$(dirname "$(echo "$0" | sed -e 's,\\,/,g')")
 rootPath=`dirname "$scriptsPath"`
@@ -42,7 +42,7 @@ UPDATE_FILE() {
     # echo "File $FILE doesn't exists"
     return
   fi
-  NAME="${FILE##*/}" # Exract extension
+  NAME="${FILE##*/}" # Exract file name
   EXT="${NAME##*.}" # Exract extension
   echo "Updating file $NAME ($FILE)..."
   mv $FILE $FILE.bak || exit 1
@@ -59,11 +59,11 @@ UPDATE_FILE() {
       | sed "s/\(\"timestamp\":\) \".*\"/\1 \"$TIMESTAMP\"/" \
       | sed "s/\(\"timetag\":\) \".*\"/\1 \"$TIMETAG\"/" \
     > $FILE || exit 1
-  elif [ "$EXT" = "local" ]; then # env.local files
+  elif [ "$EXT" = "yaml" ]; then # env.local files
     cat $FILE.bak \
-      | sed "s/\(version=\)\s*\".*\"/\1\"$VERSION\"/" \
-      | sed "s/\(timestamp=\)\s*\".*\"/\1\"$TIMESTAMP\"/" \
-      | sed "s/\(timetag=\)\s*\".*\"/\1\"$TIMETAG\"/" \
+      | sed "s/\(version:\s*\)\(\|'\|\"\).*\2/\1\2$VERSION\2/" \
+      | sed "s/\(timestamp:\s*\)\(\|'\|\"\).*\2/\1\2$TIMESTAMP\2/" \
+      | sed "s/\(timetag:\s*\)\(\|'\|\"\).*\2/\1\2$TIMETAG\2/" \
     > $FILE || exit 1
   elif [ "$EXT" = "toml" ]; then # Python
     cat $FILE.bak \
@@ -84,6 +84,12 @@ UPDATE_FILE() {
       | sed "s/\(timestamp\" content=\)\([\"']\).*\2/\1 \2$TIMESTAMP\2/" \
       | sed "s/\(timestag\" content=\)\([\"']\).*\2/\1 \2$TIMESTAG\2/" \
     > $FILE || exit 1
+  elif [ "$NAME" = ".env" ]; then # .env files
+    cat $FILE.bak \
+      | sed "s/\(version\s*=\)\s*\".*\"/\1\"$VERSION\"/" \
+      | sed "s/\(timestamp\s*=\)\s*\".*\"/\1\"$TIMESTAMP\"/" \
+      | sed "s/\(timetag\s*=\)\s*\".*\"/\1\"$TIMETAG\"/" \
+    > $FILE || exit 1
   else # MD, other free format files...
     cat $FILE.bak \
       | sed "s/\(Project info:\) .*$/\1 $PROJECT_INFO_REP/" \
@@ -95,6 +101,7 @@ UPDATE_FILE() {
   rm $FILE.bak || exit 1
 }
 
+UPDATE_FILE "$prjPath/pubspec.yaml" # TODO: Use '.env*'
 UPDATE_FILE "$prjPath/.env.local" # TODO: Use '.env*'
 UPDATE_FILE "$prjPath/package.json"
 UPDATE_FILE "$prjPath/pyproject.toml"

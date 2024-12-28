@@ -1,5 +1,7 @@
-const String googleApiKey = 'AIzaSyBsxZl1NfSTJiWSTT7eAXchhOgqFeHFwlI';
-const String googleCseId = 'a0f69bd47b89b47ef';
+import '../core/config/AppConfig.dart';
+
+const String googleApiKey = AppConfig.GOOGLE_API_KEY;
+const String googleCseId = AppConfig.GOOGLE_CSE_ID;
 
 /// @see https://developers.google.com/custom-search/v1/reference/rest/v1/cse/list
 const String googleImageUrlTemplate =
@@ -9,7 +11,7 @@ const String googleImageUrlTemplate =
     '&safe=medium'
     '&imgSize=medium'
     '&imgType=face'
-    '&fileType=png'
+    '&fileType=jpeg'
     '&tbs=iar:s' // Square?
     '&num=1'
     '&key={apiKey}'

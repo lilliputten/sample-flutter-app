@@ -22,7 +22,7 @@ indent_size = 2
 indent_size = 2
 
 # Ignore paths
-[{next/**,static/**,.vscode/launch.json,prisma/migrations/migration_lock.toml}]
+[{next/**,static/**,prisma/migrations/migration_lock.toml}]
 charset = unset
 end_of_line = unset
 insert_final_newline = unset
