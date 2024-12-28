@@ -23,4 +23,3 @@ class QuotePage extends StatelessWidget {
     );
   }
 }
-

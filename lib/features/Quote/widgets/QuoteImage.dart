@@ -1,7 +1,7 @@
-import 'package:flaming_quotes/core/helpers/fetchGoogleImage.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flaming_quotes/features/Quote/types/Quote.dart';
+import 'package:flaming_quotes/core/helpers/fetchGoogleImages.dart';
 
 class QuoteImage extends StatefulWidget {
   const QuoteImage({
@@ -16,29 +16,108 @@ class QuoteImage extends StatefulWidget {
 }
 
 class _QuoteImageState extends State<QuoteImage> {
-  late Future<String> foundImageUrl;
+  bool isLoading = false;
+  String errorStr = '';
+  String imgUrl = '';
+  List<String> imgList = [];
+  String author = '';
+  int imgIdx = 0;
 
   @override
   void initState() {
     super.initState();
-    foundImageUrl = fetchGoogleImage(widget.quote.author);
+    getImageUrlFuture();
+  }
+
+  getImageUrlFuture() {
+    print('[QuoteImage:getImageUrlFuture]: ${widget.quote.author}');
+    // Re-fetch image url...
+    imgIdx = 0;
+    setState(() {
+      author = widget.quote.author;
+      isLoading = true;
+      imgUrl = '';
+      errorStr = '';
+    });
+    final queryStr = "$author square portrait";
+    fetchGoogleImages(queryStr).then((list) {
+      print("[QuoteImage:getImageUrlFuture] Done: $list");
+      setState(() {
+        imgList = list;
+        imgUrl = imgList[imgIdx];
+      });
+    }).catchError((error) {
+      print("[QuoteImage:getImageUrlFuture] Error: $error");
+      setState(() {
+        errorStr = error.toString();
+      });
+    }).whenComplete(() {
+      print("[QuoteImage:getImageUrlFuture] Complete");
+      setState(() {
+        isLoading = false;
+      });
+    });
+  }
+
+  checkData() {
+    print('[QuoteImage:checkData]: ${widget.quote.author}');
+    // Re-fetch image url...
+    if (author != widget.quote.author) {
+      getImageUrlFuture();
+    }
+  }
+
+  void onImageError(String url) {
+    // Select next image
+    print(
+        "[QuoteImage:onImageError] Trying to select the next image on imgIdx: ($imgIdx) url: $url imgUrl: $imgUrl"); //  obj: $obj trace: $trace");
+    // Change image if it's still current one
+    if (imgUrl == url) {
+      imgIdx++;
+      setState(() {
+        imgUrl = imgIdx < imgList.length ? imgList[imgIdx] : '';
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<String>(
-      future: foundImageUrl,
+    checkData();
+    print(
+        "[QuoteImage:build] Start build with author:$author isLoading=$isLoading imgIdx=$imgIdx errorStr=$errorStr");
+    if (isLoading) {
+      return Text('Loading...');
+      // return const CircularProgressIndicator(strokeWidth: 2);
+    }
+    if (errorStr.isNotEmpty) {
+      return Text(errorStr);
+    }
+    if (imgUrl.isEmpty) {
+      return Text('No image found');
+    }
+    print("[QuoteImage:build] Rendering an image with url: $imgUrl");
+    return QuoteImageWidget(
+      url: imgUrl,
+      onImageError: onImageError,
+    );
+    /*
+    return FutureBuilder<List<String>>(
+      future: getImageUrlFuture(),
       builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          // var url = snapshot.data!;
-          return QuoteImageWidget(url: snapshot.data!);
-        } else if (snapshot.hasError) {
+        if (snapshot.hasError) {
           return Text('${snapshot.error}');
         }
-        // By default, show a loading spinner.
-        return const CircularProgressIndicator(strokeWidth: 2);
+        final imgList = snapshot.data;
+        if (imgList != null && imgIdx >= imgList.length) {
+          return Text('Can not found an image');
+        }
+        return QuoteImageWidget(
+          url: imgList != null ? imgList[imgIdx] : null,
+          onImageError: onImageError,
+        );
       },
     );
+    */
   }
 }
 
@@ -46,12 +125,26 @@ class QuoteImageWidget extends StatelessWidget {
   const QuoteImageWidget({
     super.key,
     required this.url,
+    required this.onImageError,
   });
 
   final String url;
+  final Function(String) onImageError;
 
   @override
   Widget build(BuildContext context) {
-    return Image.network(url);
+    if (url.isEmpty) {
+      return const CircularProgressIndicator(strokeWidth: 2);
+    }
+    return CircleAvatar(
+      radius: 100,
+      backgroundColor: Colors.white,
+      foregroundImage: NetworkImage(
+        url,
+      ),
+      onForegroundImageError: (obj, trace) {
+        onImageError(url);
+      },
+    );
   }
 }

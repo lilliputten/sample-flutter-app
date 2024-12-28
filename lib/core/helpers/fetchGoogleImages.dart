@@ -3,7 +3,15 @@ import 'package:http/http.dart' as http;
 
 import '../constants/apis.dart' as apis;
 
-Future<String> fetchGoogleImage(String search) async {
+// TODO: To solve google image api error of too many requests
+//
+// See https://developers.google.com/custom-search/v1/overview:
+//
+// Custom Search JSON API provides 100 search queries per day for free. If you
+// need more, you may sign up for billing in the API Console. Additional
+// requests cost $5 per 1000 queries, up to 10k queries per day.
+
+Future<List<String>> fetchGoogleImages(String search) async {
   print("Trying to get an image for the search: $search...");
   final urlString = apis.googleImageUrlTemplate
       .replaceAll('{apiKey}', apis.googleApiKey)
@@ -11,6 +19,11 @@ Future<String> fetchGoogleImage(String search) async {
       .replaceAll('{search}', search);
   print("Trying to fetch an image with url: $urlString...");
   try {
+    // // DEBUG: Return sample data
+    // return Future<List<String>>.value([
+    //   'xxx',
+    //   'https://cdn-icons-png.flaticon.com/512/9908/9908191.png',
+    // ]);
     final urlObject = Uri.parse(urlString);
     final response = await http.get(urlObject);
 
@@ -28,10 +41,11 @@ Future<String> fetchGoogleImage(String search) async {
     if (response.statusCode == 200) {
       final decoded = jsonDecode(response.body) as Map<String, dynamic>;
       final items = decoded['items'] as List;
-      final item = items[0];
-      final link = item['link'].toString();
-      print('Found image: $link');
-      return link;
+      final links = items.map((item) {
+        return item['link'].toString();
+      }).toList();
+      print('[fetchGoogleImages] Found image links: $links');
+      return links;
     } else {
       // throw Exception("Failed to load an image ($urlString)");
       final reason =
@@ -40,8 +54,9 @@ Future<String> fetchGoogleImage(String search) async {
       throw Exception(errMsg);
     }
   } catch (error) {
-    var msg = "Failed to fetch an image url ($urlString): $error";
-    print("ERROR: $msg");
+    //  with url ($urlString)
+    var msg = "Failed to fetch an images data: $error";
+    print("ERROR: $msg (image url is: $urlString)");
     throw FormatException(msg);
   }
 }
