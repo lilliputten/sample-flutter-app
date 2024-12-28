@@ -18,9 +18,9 @@ class QuotePage extends StatelessWidget {
         // color: theme.colorScheme.onPrimary,
         );
 
-    if (!appState.quoteInitialized) {
-      appState.loadQuote();
-    }
+    // if (!appState.quoteInitialized) {
+    //   appState.loadQuote();
+    // }
 
     // var futureQuote = appState.futureQuote;
     // var futureImgUrl = appState.futureImgUrl;
@@ -47,13 +47,15 @@ class QuotePage extends StatelessWidget {
                   return const CircularProgressIndicator(strokeWidth: 2);
                 },
               ),
-            // SizedBox(width: 20),
+            SizedBox(width: 20),
             FutureBuilder<Quote>(
-              future: appState.futureQuote,
-              builder: (context, snapshot) {
+              future: appState.loadQuote(),
+              // @see https://www.dhiwise.com/post/how-to-resolve-flutter-setstate-called-during-build-issue
+              builder: (BuildContext context, AsyncSnapshot<Quote> snapshot) {
                 if (snapshot.hasData) {
-                  // return Text(snapshot.data!.content);
-                  var data = snapshot.data!;
+                  // return Text('XXX');
+                  // // // return Text(snapshot.data!.content);
+                  var quote = snapshot.data!;
                   return MergeSemantics(
                     child: Column(
                       spacing: 10,
@@ -61,14 +63,14 @@ class QuotePage extends StatelessWidget {
                       // direction: Axis.vertical,
                       children: [
                         Text(
-                          data.content,
+                          quote.content,
                           style: style.copyWith(
                             // fontWeight: FontWeight.w200,
                             fontSize: 18,
                           ),
                         ),
                         Text(
-                          data.author,
+                          quote.author,
                           style: style.copyWith(
                             // fontWeight: FontWeight.bold,
                             fontStyle: FontStyle.italic,

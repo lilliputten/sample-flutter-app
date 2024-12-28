@@ -43,21 +43,23 @@ class MyAppState extends ChangeNotifier {
   late Future<String> futureImgUrl;
   // Future<Quote>? futureQuote;
 
-  void loadQuote() {
+  loadQuote() {
+    // TODO: Return loaded quote
     imgUrlInitialized = false;
     futureQuote = fetchQuote();
     futureQuote.then((quote) {
       futureImgUrl = fetchGoogleImage(quote.author);
       imgUrlInitialized = true;
-      notifyListeners();
+      // notifyListeners();
       futureImgUrl.then((url) {
         print("Image url: $url");
         imgUrl = url;
-        notifyListeners();
+        // notifyListeners();
       });
     });
     quoteInitialized = true;
-    notifyListeners();
+    // notifyListeners();
+    return futureQuote;
   }
 
   // loadQuote()
