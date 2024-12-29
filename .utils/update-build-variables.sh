@@ -1,6 +1,6 @@
 #!/bin/sh
 # @desc Update version number & build timestamps
-# @changed 2024.12.28, 17:26
+# @changed 2024.12.29, 17:57
 
 scriptsPath=$(dirname "$(echo "$0" | sed -e 's,\\,/,g')")
 rootPath=`dirname "$scriptsPath"`
@@ -61,15 +61,15 @@ UPDATE_FILE() {
     > $FILE || exit 1
   elif [ "$EXT" = "yaml" ]; then # env.local files
     cat $FILE.bak \
-      | sed "s/\(version:\s*\)\(\|'\|\"\).*\2/\1\2$VERSION\2/" \
-      | sed "s/\(timestamp:\s*\)\(\|'\|\"\).*\2/\1\2$TIMESTAMP\2/" \
-      | sed "s/\(timetag:\s*\)\(\|'\|\"\).*\2/\1\2$TIMETAG\2/" \
+      | sed "s/\(version:\s*\)\([\"']\).*\2/\1\2$VERSION\2/" \
+      | sed "s/\(timestamp:\s*\)\([\"']\).*\2/\1\2$TIMESTAMP\2/" \
+      | sed "s/\(timetag:\s*\)\([\"']\).*\2/\1\2$TIMETAG\2/" \
     > $FILE || exit 1
-  elif [ "$EXT" = "toml" ]; then # Python
+  elif [ "$EXT" = "toml" -o "$EXT" = "gradle" ]; then # Python
     cat $FILE.bak \
-      | sed "s/\(version =\) \([\"']\).*\2/\1 \2$VERSION\2/" \
-      | sed "s/\(timestamp =\) \([\"']\).*\2/\1 \2$TIMESTAMP\2/" \
-      | sed "s/\(timetag =\) \([\"']\).*\2/\1 \2$TIMETAG\2/" \
+      | sed "s/\(version\s*=\s*\)\([\"']\).*\2/\1\2$VERSION\2/" \
+      | sed "s/\(timestamp\s*=\s*\)\([\"']\).*\2/\1\2$TIMESTAMP\2/" \
+      | sed "s/\(timetag\s*=\s*\)\([\"']\).*\2/\1\2$TIMETAG\2/" \
     > $FILE || exit 1
   elif [ "$EXT" = "py" ]; then # Python
     cat $FILE.bak \
@@ -101,7 +101,8 @@ UPDATE_FILE() {
   rm $FILE.bak || exit 1
 }
 
-UPDATE_FILE "$prjPath/pubspec.yaml" # TODO: Use '.env*'
+UPDATE_FILE "$prjPath/pubspec.yaml"
+UPDATE_FILE "$prjPath/android/app/build.gradle"
 UPDATE_FILE "$prjPath/.env.local" # TODO: Use '.env*'
 UPDATE_FILE "$prjPath/package.json"
 UPDATE_FILE "$prjPath/pyproject.toml"

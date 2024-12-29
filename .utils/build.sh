@@ -1,6 +1,6 @@
 #!/bin/sh
 # @desc Create/update version tag (from build folder)
-# @changed 2024.12.27, 17:29
+# @changed 2024.12.29, 17:48
 
 scriptsPath=$(dirname "$(echo "$0" | sed -e 's,\\,/,g')")
 rootPath=`dirname "$scriptsPath"`
@@ -22,9 +22,13 @@ TIMETAG=`date -r "$VERSION_PATH" "+%y%m%d-%H%M"`
 
 echo "Generating build $PROJECT_INFO..."
 
+APK_FOLDER="build/app/outputs/apk/release"
+
   # --build-number=$VERSION \
 flutter build apk \
   --build-name==$VERSION \
   --dart-define-from-file=.env \
+  && echo "See release in $APK_FOLDER:" \
+  && ls -lah $APK_FOLDER/*.apk \
   && echo "OK"
 
