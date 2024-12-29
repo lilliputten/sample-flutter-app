@@ -12,6 +12,11 @@ import '../constants/apis.dart' as apis;
 // requests cost $5 per 1000 queries, up to 10k queries per day.
 
 Future<List<String>> fetchGoogleImages(String search) async {
+  // // DEBUG: Return sample data
+  // return Future<List<String>>.value([
+  //   'xxx',
+  //   'https://cdn-icons-png.flaticon.com/512/9908/9908191.png',
+  // ]);
   print("Trying to get an image for the search: $search...");
   final urlString = apis.googleImageUrlTemplate
       .replaceAll('{apiKey}', apis.googleApiKey)
@@ -19,11 +24,6 @@ Future<List<String>> fetchGoogleImages(String search) async {
       .replaceAll('{search}', search);
   print("Trying to fetch an image with url: $urlString...");
   try {
-    // DEBUG: Return sample data
-    return Future<List<String>>.value([
-      'xxx',
-      'https://cdn-icons-png.flaticon.com/512/9908/9908191.png',
-    ]);
     final urlObject = Uri.parse(urlString);
     final response = await http.get(urlObject);
 
