@@ -19,6 +19,7 @@ void checkEnvironmentVariables() {
   print("GOOGLE_API_KEY: ${AppConfig.GOOGLE_API_KEY}");
   print("GOOGLE_CSE_ID: ${AppConfig.GOOGLE_CSE_ID}");
   print("LOCAL: ${AppConfig.LOCAL}");
+  print("DEBUG: ${AppConfig.DEBUG}");
   if (AppConfig.GOOGLE_API_KEY.isEmpty) {
     throw Exception(
         'Required environment variables is undefined: GOOGLE_API_KEY');

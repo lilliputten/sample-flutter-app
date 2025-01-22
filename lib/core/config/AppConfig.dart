@@ -2,11 +2,8 @@
 
 /// Environment variables and shared app constants.
 abstract class AppConfig {
-  // Examples:
-  // static const DEBUG = bool.fromEnvironment('DEBUG', defaultValue: false);
-  // static const TEST = String.fromEnvironment('TEST', defaultValue: '');
-
   static const LOCAL = bool.fromEnvironment('LOCAL', defaultValue: false);
+  static const DEBUG = bool.fromEnvironment('DEBUG', defaultValue: false);
 
   static const String GOOGLE_API_KEY =
       String.fromEnvironment('GOOGLE_API_KEY', defaultValue: '');
